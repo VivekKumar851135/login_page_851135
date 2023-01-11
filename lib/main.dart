@@ -29,14 +29,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+  bool isPressed = true;
+  String? text;
+  TextEditingController mycontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,16 +128,51 @@ class _MyHomePageState extends State<MyHomePage> {
                           color: Colors.white.withOpacity(0.5),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: TextField(
-                          keyboardType: TextInputType.numberWithOptions(),
-                          obscureText: true,
-                          // keyboardType: TextInputType(),
-                          decoration: InputDecoration(
-                              suffixIcon: Icon(Icons.visibility_outlined),
-                              border: InputBorder.none,
-                              labelText: "Password",
-                              labelStyle: TextStyle(fontSize: 17)),
-                        ),
+                        child: Stack(
+                            alignment: AlignmentDirectional.centerEnd,
+                            children: [
+                              TextField(
+                                controller: mycontroller,
+                                onChanged: (value) {
+                                  text = value;
+                                },
+                                keyboardType: TextInputType.numberWithOptions(),
+                                obscureText: isPressed ? true : false,
+                                // keyboardType: TextInputType(),
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    labelText: "Password",
+                                    labelStyle: TextStyle(fontSize: 17)),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              IconButton(
+                                  onPressed: (() {
+                                    if (isPressed == true) {
+                                      setState(() {
+                                        isPressed = false;
+                                      });
+                                    } else if (isPressed == false) {
+                                      setState(() {
+                                        isPressed = true;
+                                      });
+                                    }
+                                  }),
+                                  icon: isPressed
+                                      ? Icon(Icons.visibility_off_outlined)
+                                      : Icon(Icons.visibility_outlined)),
+                            ]),
+                        // child:
+                        // TextField(
+                        //   keyboardType: TextInputType.numberWithOptions(),
+                        //   obscureText: true,
+                        //   // keyboardType: TextInputType(),
+                        //   decoration: InputDecoration(
+                        //       border: InputBorder.none,
+                        //       labelText: "Password",
+                        //       labelStyle: TextStyle(fontSize: 17)),
+                        // ),
                       ),
                       SizedBox(
                         height: 15,
@@ -166,7 +196,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: 340,
                     // color: Colors.pinkAccent,
                     child: ElevatedButton(
-                      onPressed: (() {}),
+                      onPressed: (() {
+                        print("$text");
+                      }),
                       child: Text(
                         "Sign In",
                         style: TextStyle(
